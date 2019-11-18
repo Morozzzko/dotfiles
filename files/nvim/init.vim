@@ -7,6 +7,9 @@ Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}} " VSCode & LSP
 Plug 'w0rp/ale'
 Plug 'brooth/far.vim' " Search & replace
 
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb' " gh support for vim-fugitive
+
 Plug 'scrooloose/nerdtree' " Project tree
 
 Plug 'ntpeters/vim-better-whitespace' " Highlight extra whitespace
@@ -35,7 +38,7 @@ Plug 'Yggdroot/indentLine' " Indentation line
 Plug 'othree/html5.vim'
 " Plug 'tpope/vim-ragtag' " Adds tags for php, django, etc.
 " Plug 'digitaltoad/vim-pug', { 'for': 'pug' }
-" Plug 'slim-template/vim-slim', { 'for': ['slim', 'slime'] }
+Plug 'slim-template/vim-slim', { 'for': ['slim', 'slime'] }
 Plug 'jparise/vim-graphql'
 
 Plug 'pangloss/vim-javascript'
