@@ -35,6 +35,8 @@ Plug 'hjanuschka/vim-danger'
 
 Plug 'Yggdroot/indentLine' " Indentation line
 
+Plug 'udalov/kotlin-vim'
+
 Plug 'othree/html5.vim'
 " Plug 'tpope/vim-ragtag' " Adds tags for php, django, etc.
 " Plug 'digitaltoad/vim-pug', { 'for': 'pug' }
@@ -44,6 +46,9 @@ Plug 'jparise/vim-graphql'
 Plug 'pangloss/vim-javascript'
 Plug 'chemzqm/vim-jsx-improve', { 'for': 'javascript' }
 
+Plug 'aklt/plantuml-syntax'
+Plug 'tyru/open-browser.vim'
+Plug 'weirongxu/plantuml-previewer.vim'
 
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
@@ -258,7 +263,7 @@ let g:indentLine_enabled = 1
 
 " ## close buffers
 
-nnoremap <silent> Q :CloseBuffersMenu<CR>
+nnoremap <silent> Q :Bdelete menu<CR>
 
 " # COC
 
