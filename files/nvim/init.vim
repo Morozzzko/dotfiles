@@ -33,6 +33,11 @@ Plug 'hjanuschka/vim-danger'
 
 " ## Language support
 
+Plug 'editorconfig/editorconfig-vim'
+
+Plug 'lervag/vimtex'
+
+Plug 'bfrg/vim-cpp-modern'
 Plug 'Yggdroot/indentLine' " Indentation line
 
 Plug 'udalov/kotlin-vim'
@@ -53,6 +58,11 @@ Plug 'weirongxu/plantuml-previewer.vim'
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 
+" Markdown
+"
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+
+
 " Running test
 
 Plug 'janko-m/vim-test'
@@ -63,6 +73,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 Plug 'ekalinin/Dockerfile.vim', { 'for': 'Dockerfile' }
+
 
 call plug#end()
 
@@ -162,11 +173,11 @@ nnoremap <leader>fc :Commits<CR>
 nnoremap <leader>ff :Files<CR>
 nnoremap <leader>fa :Ag<CR>
 
-let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_layout = { 'down': '~35%' }
 
-let g:fzf_layout = { 'window': 'enew' }
-let g:fzf_layout = { 'window': '-tabnew' }
-let g:fzf_layout = { 'window': '10split enew' }
+" let g:fzf_layout = { 'window': 'enew' }
+" let g:fzf_layout = { 'window': '-tabnew' }
+" let g:fzf_layout = { 'window': '15split enew' }
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -198,6 +209,15 @@ command! -bang -nargs=* Rg
 
 " ## ALE
 
+" Redefine
+call ale#linter#Define('kotlin', {
+\   'name': 'ktlint',
+\   'executable': './gradlew',
+\   'command': './gradlew lintKotlin',
+\   'callback': 'ale#handlers#ktlint#Handle',
+\   'lint_file': 1
+\})
+
 " \ 'scss': ['stylelint'],
 " \ 'css': ['stylelint'],
 " \ 'python': ['autopep8'],
@@ -207,16 +227,19 @@ let g:ale_fixers = {
       \ 'ruby': ['rubocop'],
       \ 'javascript': ['prettier', 'eslint'],
       \ 'reason': ['refmt'],
+      \ 'kotlin': ['ktlint'],
       \ '*': []
       \}
 
 let g:ale_linters = {
       \ 'ruby': ['rubocop'],
       \ 'javascript': ['eslint'],
+      \ 'kotlin': ['ktlint'],
       \ '*': []
       \}
 
 let g:ale_ruby_rubocop_executable = 'rubocop-daemon-wrapper'
+let g:ale_ruby_rubocop_options = '--auto-correct-all'
 let g:ale_linters_explicit = 0 " Do not run linters not listed in the file
 
 let g:ale_fix_on_save = 1
@@ -254,7 +277,7 @@ endfunction
 
 " ## git-blame
 
-nnoremap <Leader>gb :<C-u>call gitblame#echo()<CR>
+nnoremap <silent> <Leader>gb :Gblame<CR>
 
 " ## indent lines
 
