@@ -32,6 +32,10 @@ Plug 'Asheq/close-buffers.vim' " Close all buffers except current
 Plug 'hjanuschka/vim-danger'
 
 " ## Language support
+"
+Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
+Plug 'c-brenn/phoenix.vim', { 'for': 'elixir' }
+Plug 'andys8/vim-elm-syntax', { 'for': ['elm'] }
 
 Plug 'editorconfig/editorconfig-vim'
 
@@ -62,6 +66,8 @@ Plug 'tpope/vim-rails', { 'for': 'ruby' }
 "
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
+Plug 'wincent/ferret'
+
 
 " Running test
 
@@ -74,6 +80,10 @@ Plug 'junegunn/fzf.vim'
 
 Plug 'ekalinin/Dockerfile.vim', { 'for': 'Dockerfile' }
 
+" Devops
+
+Plug 'hashivim/vim-terraform'
+
 
 call plug#end()
 
@@ -83,7 +93,6 @@ set nofoldenable " Do not fold blocks (?)
 set wrap " Wrap lines
 set linebreak " Wrap lines the smart way (by words)
 set number " Line numbers
-set relativenumber " Set lines relative to current
 set hlsearch " Highliight matches for prev search
 set ignorecase " Simplify search by ignoring case
 set smartcase
@@ -222,12 +231,12 @@ call ale#linter#Define('kotlin', {
 " \ 'css': ['stylelint'],
 " \ 'python': ['autopep8'],
 " \ 'slim': ['trim_whitespace'],
-" \ 'elixir': ['mix_format'],
 let g:ale_fixers = {
       \ 'ruby': ['rubocop'],
       \ 'javascript': ['prettier', 'eslint'],
       \ 'reason': ['refmt'],
       \ 'kotlin': ['ktlint'],
+      \ 'elixir': ['mix_format'],
       \ '*': []
       \}
 
@@ -310,3 +319,8 @@ nmap <silent> t<C-l> :TestLast<CR>
 nmap <silent> t<C-g> :TestVisit<CR>
 
 let test#strategy = "neovim"
+
+" Seach with ack. Select in visual and press the button
+
+vnoremap <Leader>a y:Ack <C-r>=fnameescape(@")<CR><CR>
+vnoremap <Leader>r y:Acks /<C-r>=fnameescape(@")<CR>/

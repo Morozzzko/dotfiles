@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+dest = ARGF.argv.first
+
+branch = `git rev-parse --abbrev-ref HEAD`
+
+parts = branch.split('-')
+
+def decide_source(parts)
+  if parts.first == 'rollbar' || parts.first == 'rb'
+    :rollbar
+  elsif parts.first.to_i.to_s == parts.first
+    :github
+  elsif parts[1].to_i != 0
+    :jira
+  else
+    :none
+  end
+end
+
+ticket = case decide_source(parts)
+         when :github
+           "##{parts.first}"
+         when :rollbar
+           parts[0..1].join('#').upcase
+         when :jira
+           parts[0..1].join('-').upcase
+         when :none
+           ''
+         end
+
+if !ticket.empty? && !ARGF.argv.include?('HEAD')
+  content = File.read(dest)
+
+  description, *rest = content.split('------------------------ >8 ------------------------')
+
+  comment = ->(string) { string.start_with?('#', ';') }
+
+  clean_description = description.split("\n").map(&:strip).reject(&:empty?).reject(&comment).join("\n")
+
+  puts clean_description
+
+  File.write(dest, "#{ticket} \n" + content) if clean_description.empty?
+end
