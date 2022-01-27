@@ -17,5 +17,7 @@ function repo --description "<work/personal>"
             git config commit.gpgsign true
     end
 
+    ghi
+
     echo "Set email and sign key for $type use"
 end
