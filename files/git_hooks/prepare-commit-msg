@@ -3,34 +3,45 @@
 
 dest = ARGF.argv.first
 
-branch = `git rev-parse --abbrev-ref HEAD`
+branch_name = `git rev-parse --abbrev-ref HEAD`.strip
 
-parts = branch.split('-')
 
-def decide_source(parts)
-  if parts.first == 'rollbar' || parts.first == 'rb'
+# feat/chore/whatever--task-num--branch-name
+
+regex = /((?<type>[[:alpha:]]+)(-+))?(?<ticket>((?<source>[[:alpha:]]*)-?)\d+)(-)*(?<description>.*)/
+
+match = regex.match(branch_name)
+
+def decide_source(match)
+  source = match[:source]
+
+  if source == 'rollbar' || source == 'rb'
     :rollbar
-  elsif parts.first.to_i.to_s == parts.first
+  elsif source.empty?
     :github
-  elsif parts[1].to_i != 0
-    :jira
   else
-    :none
+    :jira
   end
 end
 
-ticket = case decide_source(parts)
-         when :github
-           "##{parts.first}"
+ticket = case decide_source(match)
          when :rollbar
-           parts[0..1].join('#').upcase
-         when :jira
-           parts[0..1].join('-').upcase
-         when :none
+           match[:ticket].gsub('-', '#').upcase
+         else
+           match[:ticket].upcase
+         end
+
+prefix = if match[:type]
+           "#{match[:type]}:"
+         else
            ''
          end
 
-if !ticket.empty? && !ARGF.argv.include?('HEAD')
+ticket_string = [prefix, "[#{ticket}]"].reject(&:empty?).join(' ')
+
+
+
+if match && !ARGF.argv.include?('HEAD')
   content = File.read(dest)
 
   description, *rest = content.split('------------------------ >8 ------------------------')
@@ -41,5 +52,5 @@ if !ticket.empty? && !ARGF.argv.include?('HEAD')
 
   puts clean_description
 
-  File.write(dest, "#{ticket} \n" + content) if clean_description.empty?
+  File.write(dest, "#{ticket_string} \n" + content) if clean_description.empty?
 end
