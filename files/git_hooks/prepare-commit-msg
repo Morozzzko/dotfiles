@@ -24,24 +24,22 @@ def decide_source(match)
   end
 end
 
-ticket = case decide_source(match)
-         when :rollbar
-           match[:ticket].gsub('-', '#').upcase
-         else
-           match[:ticket].upcase
-         end
-
-prefix = if match[:type]
-           "#{match[:type]}:"
-         else
-           ''
-         end
-
-ticket_string = [prefix, "[#{ticket}]"].reject(&:empty?).join(' ')
-
-
-
 if match && !ARGF.argv.include?('HEAD')
+  ticket = case decide_source(match)
+           when :rollbar
+             match[:ticket].gsub('-', '#').upcase
+           else
+             match[:ticket].upcase
+           end
+
+  prefix = if match[:type]
+             "#{match[:type]}:"
+           else
+             ''
+           end
+
+  ticket_string = [prefix, "[#{ticket}]"].reject(&:empty?).join(' ')
+
   content = File.read(dest)
 
   description, *rest = content.split('------------------------ >8 ------------------------')
