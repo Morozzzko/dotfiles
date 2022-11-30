@@ -1,6 +1,0 @@
-{
-  "solargraph.useBundler": true,
-  "solargraph.formatting": false,
-  "solargraph.autoformat": false,
-  "solargraph.commandPath": "solargraph"
-}
