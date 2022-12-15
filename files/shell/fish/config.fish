@@ -15,7 +15,7 @@ abbr -a gbm git branch -m
 abbr -a -g -- gst 'tig status'
 abbr -a -U -- gst 'tig status'
 
-abbr gbda 'git branch --no-color --merged | command grep -vE "^(\+|\*|\s*(master|develop|dev)\s*\$)" | command xargs -n 1 git branch -d'
+abbr gbda "git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' | awk '\$2 == \"[gone]\" {print \$1}' | xargs -r git branch -D"
 
 abbr hubpr "hub pull-request --base=(git branch | cut -c 3- | grep -E '^master\$|^main\$')"
 
