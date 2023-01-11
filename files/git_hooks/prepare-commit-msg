@@ -6,11 +6,29 @@ dest = ARGF.argv.first
 branch_name = `git rev-parse --abbrev-ref HEAD`.strip
 
 
-# feat/chore/whatever--task-num--branch-name
+CONVENTIONAL_TYPES = [
+  'build',
+  'chore',
+  'ci',
+  'docs',
+  'feat',
+  'fix',
+  'perf',
+  'refactor',
+  'revert',
+  'style',
+  'test'
+].join('|')
 
-regex = /((?<type>[[:alpha:]]+)(-+))?(?<ticket>((?<source>[[:alpha:]]*)-?)\d+)(-)*(?<description>.*)/
+REGEX_CONVENTIONAL = /^((?<type>#{CONVENTIONAL_TYPES}{3,})(?<delimiter>[-\/]+))?(?<ticket>((?<source>[[:alpha:]]*)-?)\d+)\k<delimiter>(?<description>.*)$/
 
-match = regex.match(branch_name)
+REGEX_NORMAL = /^(?<ticket>((?<source>[[:alpha:]]*)-?)\d+)(?<delimiter>[-\/]+)(?<description>.*)$/
+
+def parse_branch(branch_name)
+  REGEX_CONVENTIONAL.match(branch_name) || REGEX_NORMAL.match(branch_name)
+end
+
+match = parse_branch(branch_name)
 
 def decide_source(match)
   source = match[:source]
@@ -42,7 +60,7 @@ if match && !ARGF.argv.include?('HEAD')
 
   content = File.read(dest)
 
-  description, *rest = content.split('------------------------ >8 ------------------------')
+  description, *_rest = content.split('------------------------ >8 ------------------------')
 
   comment = ->(string) { string.start_with?('#', ';') }
 
