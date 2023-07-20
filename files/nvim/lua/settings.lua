@@ -12,7 +12,7 @@ local options = {
 	shiftwidth = 2,
 	splitbelow = true,
 	cmdheight = 2,
-	signcolumn = 'no',
+	signcolumn = 'yes',
 	scrolloff = 3,
 	-- turn backup off
 	backup = false,
