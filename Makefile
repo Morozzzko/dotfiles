@@ -4,4 +4,4 @@ store-shell-config:
 	rsync -rv ~/.config/fish/ files/fish/
 
 store-nvim-config:
-	rsync ~/.config/nvim files/nvim
+	rsync -rv ~/.config/nvim/ files/nvim/

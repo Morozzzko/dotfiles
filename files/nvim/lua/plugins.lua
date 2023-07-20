@@ -4,9 +4,54 @@ vim.api.nvim_create_autocmd("BufWritePost", { pattern = "plugins.lua", command =
 
 return require('packer').startup({
   function(use)
+      -- use '~/projects/mine/git-browse-nvim'
+      use { "Morozzzko/git_browse.nvim" }
       use 'wbthomason/packer.nvim'
 
       use { 'catppuccin/nvim', as = "catppuccin" } -- colorscheme
+
+      use {
+          'VonHeikemen/lsp-zero.nvim',
+          requires = {
+            -- LSP Support
+            {'neovim/nvim-lspconfig'},
+            {'williamboman/mason.nvim'},
+            {'williamboman/mason-lspconfig.nvim'},
+
+            -- Autocompletion
+            {'hrsh7th/nvim-cmp'},
+            {'hrsh7th/cmp-buffer'},
+            {'hrsh7th/cmp-path'},
+            {'saadparwaiz1/cmp_luasnip'},
+            {'hrsh7th/cmp-nvim-lsp'},
+            {'hrsh7th/cmp-nvim-lua'},
+
+            -- Snippets
+            {'L3MON4D3/LuaSnip'},
+            -- Snippet Collection (Optional)
+            {'rafamadriz/friendly-snippets'},
+          },
+          config = require('plugins.lsp-zero')
+      }
+
+      use {
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
+        event = "InsertEnter",
+        config = function()
+          require("copilot").setup({
+            -- suggestion = { enabled = false },
+            -- panel = { enabled = false },
+          })
+        end,
+      }
+      use {
+        "zbirenbaum/copilot-cmp",
+        after = { "copilot.lua" },
+        config = function ()
+          require("copilot_cmp").setup()
+        end
+      }
 
       use {
         "nvim-neo-tree/neo-tree.nvim",
@@ -16,19 +61,7 @@ return require('packer').startup({
             "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
             "MunifTanjim/nui.nvim",
           },
-          config = function()
-            require('neo-tree').setup({
-              event_handlers = {
-                {
-                  event = "file_opened",
-                  handler = function(file_path)
-                    --auto close
-                    require("neo-tree").close('buffers')
-                  end
-                },
-              }
-            })
-          end
+          config = require('plugins.neo-tree')
         }
       use 'junegunn/fzf.vim'
 
@@ -41,32 +74,7 @@ return require('packer').startup({
           { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
           { 'nvim-telescope/telescope-live-grep-args.nvim' }
         },
-        config = function()
-          local telescope = require('telescope')
-          telescope.setup {
-            pickers = {
-              find_files = {
-                follow = true
-              },
-              live_grep = {
-                follow = true
-              }
-            },
-            extensions = {
-              fzf = {
-                fuzzy = true, -- false will only do exact matching
-                override_generic_sorter = true, -- override the generic sorter
-                override_file_sorter = true, -- override the file sorter
-                case_mode = 'smart_case' -- or "ignore_case" or "respect_case"
-                -- the default case_mode is "smart_case"
-              }
-            }
-          }
-
-          telescope.load_extension("live_grep_args")
-          telescope.load_extension('fzf')
-        end,
-        -- config = require('plugins.telescope-nvim')
+        config = require('plugins.nvim-telescope')
       }
 
       use 'tpope/vim-commentary' -- Comment lines using gc
@@ -98,16 +106,7 @@ return require('packer').startup({
       use {
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate',
-        config = function()
-          require 'nvim-treesitter.configs'.setup {
-             ensure_installed = 'all',
-             highlight = {
-                enable = true, -- false will disable the whole extension
-                indent = { enable = true },
-                use_languagetree = true
-            },
-        }
-        end
+        config = require('plugins.nvim-treesitter')
       }
       use {
         'David-Kunz/treesitter-unit', 
@@ -123,7 +122,9 @@ return require('packer').startup({
       use {
         'windwp/nvim-ts-autotag',
         requires = { 'nvim-treesitter/nvim-treesitter' },
-        config = function() require('nvim-ts-autotag').setup() end
+        config = function() 
+          -- require('nvim-ts-autotag').setup() 
+        end
       }
       
       use 'tpope/vim-fugitive' -- GBrowse
@@ -141,6 +142,7 @@ return require('packer').startup({
               close = "q",
               next_match = "n",
               prev_match = "N",
+              replace_confirm = "<cr>",
               replace_all = "<leader><cr>",
             },
           }
@@ -148,6 +150,8 @@ return require('packer').startup({
       }
 
       use { 'aymericbeaumet/vim-symlink', requires = { 'moll/vim-bbye' } }
+
+      use "lukas-reineke/lsp-format.nvim"
   end,
 
   config = {

@@ -33,10 +33,10 @@ bind('n', '<C-n>', ':NvimTreeFindFile<CR>')
 
 
 -- Use "displayed" lines instead of real lines. Use wrapped lines
-bind('n', 'j', 'gj')
-bind('n', 'k', 'gk')
-bind('n', '<Down>', 'gj')
-bind('n', '<Up>', 'gk')
+bind('n', 'j', 'gj', opts)
+bind('n', 'k', 'gk', opts)
+bind('n', '<Down>', 'gj', opts)
+bind('n', '<Up>', 'gk', opts)
 
 -- buffers
 bind('n', '<leader>b', ':Neotree action=focus source=buffers position=bottom<CR>', opts)
@@ -46,5 +46,12 @@ bind('n', '<leader>ff', builtin.find_files, opts)
 bind('n', '<leader>fa', builtin.live_grep, opts)
 bind('n', '<leader>fh', builtin.help_tags, opts)
 
+bind('n', '<leader>yl', '0vg_y', opts)
+
 
 vim.keymap.set({ "n", "x" }, "<leader>fr", function() require("ssr").open() end)
+
+bind('n', 'ff', ':LspZeroFormat!<CR>', opts)
+
+bind('n', '<leader>cp', ":let @+=expand('%p')<cr>", opts)
+bind('n', '<leader>yp', ":let @+=expand('%p')<cr>", opts)
