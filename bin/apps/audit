@@ -12,11 +12,11 @@ for app in /Applications/*.app; do
   found=1
   echo ""
   echo "  $app_name"
-  printf "  [c] Add to required  [g] Global ignore  [l] Local ignore  [N] Skip: "
+  printf "  [a] Add to required  [g] Global ignore  [l] Local ignore  [N] Skip: "
   read -r response
   case "$response" in
-    c|C)
-      read -rp "    Download URL: " url
+    a|A)
+      read -rp "    Download URL (leave blank to skip): " url
       echo "${app_name%.app}|/Applications/$app_name|$url" >> "$APPS_CONF"
       echo "  → Added to apps.conf (edit display name if needed)"
       ;;

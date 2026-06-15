@@ -10,7 +10,11 @@ for entry in "${REQUIRED_APPS[@]}"; do
     echo "  ✓ $name"
   else
     echo "  ✗ $name"
-    read -rp "    Open download page? [y/N] " response
-    if [[ "$response" =~ ^[Yy]$ ]]; then open "$url"; fi
+    if [ -z "$url" ]; then
+      echo "    No download URL — search for it manually"
+    else
+      read -rp "    Open download page? [y/N] " response
+      if [[ "$response" =~ ^[Yy]$ ]]; then open "$url"; fi
+    fi
   fi
 done
