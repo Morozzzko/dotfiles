@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# Single entrypoint for setting up a new machine.
+# Run this script repeatedly — each step is idempotent.
+set -euo pipefail
+
+DOTFILES_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+
+step() {
+  echo
+  echo "==> $1"
+}
+
+# ── Homebrew ──────────────────────────────────────────────────────────────────
+
+step "Homebrew"
+if command -v brew &>/dev/null; then
+  echo "  ✓ Already installed"
+else
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# ── Brew packages ─────────────────────────────────────────────────────────────
+
+step "Brew packages"
+if [ -f "$DOTFILES_DIR/Brewfile" ]; then
+  brew bundle --file="$DOTFILES_DIR/Brewfile"
+else
+  echo "  – No Brewfile found, skipping"
+fi
+
+# ── Stow ──────────────────────────────────────────────────────────────────────
+
+step "Stow"
+if ! command -v stow &>/dev/null; then
+  echo "  ✗ stow is not installed — add it to Brewfile or install it manually" >&2
+  exit 1
+fi
+for pkg in fish nvim shell git; do
+  stow --dir="$DOTFILES_DIR" --target="$HOME" --restow "$pkg"
+  echo "  ✓ $pkg"
+done
+
+# ── Secrets file ──────────────────────────────────────────────────────────────
+
+step "Secrets"
+if [ -f "$HOME/.profile_secrets" ]; then
+  echo "  ✓ ~/.profile_secrets already exists"
+else
+  touch "$HOME/.profile_secrets"
+  echo "  ✓ Created ~/.profile_secrets"
+fi
+
+# ── Apps ──────────────────────────────────────────────────────────────────────
+
+step "Apps"
+"$DOTFILES_DIR/bin/apps/check"
