@@ -92,6 +92,21 @@ else
   echo "  ✓ Created ~/.profile_secrets"
 fi
 
+# ── Git ───────────────────────────────────────────────────────────────────────
+
+step "Git"
+git config --global user.name "Igor Morozov"
+echo "  ✓ user.name = Igor Morozov"
+
+current_email="$(git config --global user.email 2>/dev/null || true)"
+if [ -n "$current_email" ]; then
+  echo "  ✓ user.email = $current_email (already set)"
+else
+  read -rp "  Email [igor@morozov.is]: " email
+  git config --global user.email "${email:-igor@morozov.is}"
+  echo "  ✓ user.email = ${email:-igor@morozov.is}"
+fi
+
 # ── Apps ──────────────────────────────────────────────────────────────────────
 
 step "Apps"
