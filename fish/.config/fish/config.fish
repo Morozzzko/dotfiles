@@ -29,7 +29,7 @@ abbr hubpr "hub pull-request --base=(git branch | cut -c 3- | grep -E '^master\$
 
 abbr gcom "git checkout (git branch | cut -c 3- | grep -E '^master\$|^main\$')"
 
-source /usr/local/opt/asdf/libexec/asdf.fish
+mise activate fish | source
 set -g fish_user_paths "/usr/local/opt/libpq/bin" $fish_user_paths
 
  function fish_right_prompt

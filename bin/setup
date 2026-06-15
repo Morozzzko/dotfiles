@@ -35,7 +35,7 @@ if ! command -v stow &>/dev/null; then
   echo "  ✗ stow is not installed — add it to Brewfile or install it manually" >&2
   exit 1
 fi
-for pkg in fish nvim shell git; do
+for pkg in fish nvim shell git mise; do
   stow --dir="$DOTFILES_DIR" --target="$HOME" --restow "$pkg"
   echo "  ✓ $pkg"
 done
@@ -71,6 +71,16 @@ else
   echo "  ✓ Preferences pointing to $ITERM_PREFS"
   echo "  – Restart iTerm2 to apply"
 fi
+
+# ── Mise ──────────────────────────────────────────────────────────────────────
+
+step "Mise"
+if ! command -v mise &>/dev/null; then
+  echo "  ✗ mise not installed — add it to Brewfile" >&2
+  exit 1
+fi
+mise install --quiet
+echo "  ✓ Tools installed"
 
 # ── Secrets file ──────────────────────────────────────────────────────────────
 
