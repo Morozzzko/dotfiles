@@ -40,6 +40,38 @@ for pkg in fish nvim shell git; do
   echo "  ✓ $pkg"
 done
 
+# ── Default shell ─────────────────────────────────────────────────────────────
+
+step "Default shell"
+FISH="$(which fish 2>/dev/null || true)"
+if [ -z "$FISH" ]; then
+  echo "  ✗ fish not found — ensure it is in Brewfile" >&2
+  exit 1
+fi
+if [ "$SHELL" = "$FISH" ]; then
+  echo "  ✓ Already set to fish"
+else
+  if ! grep -qxF "$FISH" /etc/shells; then
+    echo "  Adding fish to /etc/shells (requires sudo)..."
+    echo "$FISH" | sudo tee -a /etc/shells > /dev/null
+  fi
+  chsh -s "$FISH"
+  echo "  ✓ Default shell set to fish (re-login to apply)"
+fi
+
+# ── iTerm2 ────────────────────────────────────────────────────────────────────
+
+step "iTerm2"
+ITERM_PREFS="$DOTFILES_DIR/iterm2"
+if [ ! -d "$ITERM_PREFS" ]; then
+  echo "  – No iterm2/ directory found, skipping"
+else
+  defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$ITERM_PREFS"
+  defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+  echo "  ✓ Preferences pointing to $ITERM_PREFS"
+  echo "  – Restart iTerm2 to apply"
+fi
+
 # ── Secrets file ──────────────────────────────────────────────────────────────
 
 step "Secrets"
