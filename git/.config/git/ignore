@@ -3,3 +3,7 @@
 *.swo
 .idea/
 .vscode/
+
+# AI tools
+**/.claude/settings.local.json
+.cursor/
