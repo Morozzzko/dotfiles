@@ -10,7 +10,7 @@ return function()
     },
   }
 
-    local ft_to_parser = require"nvim-treesitter.parsers".filetype_to_parsername
-    ft_to_parser.erb = "html"
+    -- local ft_to_parser = require"nvim-treesitter.parsers".filetype_to_parsername
+    -- ft_to_parser.erb = "html"
 end
 

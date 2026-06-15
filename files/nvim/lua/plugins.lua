@@ -1,24 +1,27 @@
 -- Update after anything changes
 --
 
-return require('lazy').setup({
+require('lazy').setup({
       -- '~/projects/mine/git-browse-nvim'
     { "Morozzzko/git_browse.nvim" },
 
     { 'catppuccin/nvim', as = "catppuccin" } ,-- colorscheme
--- {'williamboman/mason.nvim'},
--- {'williamboman/mason-lspconfig.nvim'},
 
-    {'williamboman/mason.nvim'},
-    {'williamboman/mason-lspconfig.nvim'},
-    {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x', config = require('plugins.lsp-zero')},
-    {'neovim/nvim-lspconfig'},
-    {'hrsh7th/nvim-cmp'},
-    {'hrsh7th/cmp-nvim-lsp'},
-    {'hrsh7th/cmp-buffer'},
-    {'hrsh7th/cmp-path'},
-    {'hrsh7th/cmp-nvim-lua'},
-    {'L3MON4D3/LuaSnip'},
+    {
+      'williamboman/mason.nvim', 
+      config = require('plugins.mason'),
+      dependencies = {
+        'neovim/nvim-lspconfig',
+        'williamboman/mason-lspconfig.nvim',
+        {'hrsh7th/nvim-cmp'},
+        {'hrsh7th/cmp-nvim-lsp'},
+        {'hrsh7th/cmp-buffer'},
+        {'hrsh7th/cmp-path'},
+        {'hrsh7th/cmp-nvim-lua'},
+        {'L3MON4D3/LuaSnip'},
+      }
+    },
+    -- {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x', config = require('plugins.lsp-zero')},
     -- {
     --     'VonHeikemen/lsp-zero.nvim',
     --     dependencies =  {
@@ -101,16 +104,18 @@ return require('lazy').setup({
       end
     },
 
-    -- {
-    --   'lukas-reineke/indent-blankline.nvim',
-    --   tag = "v2.20.8",
-    --   config = function()
-    --     require("indent_blankline").setup {
-    --         show_current_context = true,
-    --         show_current_context_start = true,
-    --     }
-    --   end
-    -- },
+    {
+      'lukas-reineke/indent-blankline.nvim',
+      main = "ibl",
+      ---@module "ibl"
+      ---@type ibl.config
+      opts = {},
+      config = function()
+          require("ibl").setup()
+            -- show_current_context = true,
+            -- show_current_context_start = true,
+      end
+    },
 
 
     {
@@ -138,24 +143,24 @@ return require('lazy').setup({
     },
     
     
-    {
-      "cshuaimin/ssr.nvim",
-      module = "ssr",
-      -- Calling setup is optional.
-      config = function()
-        require("ssr").setup {
-          min_width = 50,
-          min_height = 5,
-          keymaps = {
-            close = "q",
-            next_match = "n",
-            prev_match = "N",
-            replace_confirm = "<cr>",
-            replace_all = "<leader><cr>",
-          },
-        }
-      end
-    },
+    -- {
+    --   "cshuaimin/ssr.nvim",
+    --   module = "ssr",
+    --   -- Calling setup is optional.
+    --   config = function()
+    --     require("ssr").setup {
+    --       min_width = 50,
+    --       min_height = 5,
+    --       keymaps = {
+    --         close = "q",
+    --         next_match = "n",
+    --         prev_match = "N",
+    --         replace_confirm = "<cr>",
+    --         replace_all = "<leader><cr>",
+    --       },
+    --     }
+    --   end
+    -- },
 
     { 'aymericbeaumet/vim-symlink', dependencies =  { 'moll/vim-bbye' } },
 
@@ -169,3 +174,4 @@ return require('lazy').setup({
   --   }
   -- }
 })
+require('plugins.lspconfig')

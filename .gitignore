@@ -1,0 +1,7 @@
+*.tmp.*
+.DS_Store
+files/fish/completions
+files/fish/conf.d
+files/fish/fish_variables
+files/fish/functions/repo.fish
+files/nvim/plugin/
