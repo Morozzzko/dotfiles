@@ -107,6 +107,20 @@ else
   echo "  ✓ user.email = ${email:-igor@morozov.is}"
 fi
 
+# ── Shared projects ───────────────────────────────────────────────────────────
+
+step "Shared projects"
+SHARED_DIR="/Users/Shared/projects"
+LINK="$HOME/projects/shared"
+mkdir -p "$SHARED_DIR"
+if [ -L "$LINK" ] && [ "$(readlink "$LINK")" = "$SHARED_DIR" ]; then
+  echo "  ✓ ~/projects/shared already linked"
+else
+  mkdir -p "$HOME/projects"
+  ln -sfn "$SHARED_DIR" "$LINK"
+  echo "  ✓ ~/projects/shared → $SHARED_DIR"
+fi
+
 # ── Typography Layout ─────────────────────────────────────────────────────────
 
 step "Typography Layout (Ilya Birman)"
