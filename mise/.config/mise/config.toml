@@ -1,8 +1,9 @@
 [tools]
-# Global default tool versions — override per-project via .tool-versions,
-# .ruby-version, .node-version, .nvmrc, etc.
-# ruby = "3.3"
-# node = "lts"
+ruby   = ["4.0"]
+node   = ["24"]
+python = ["3.14"]
+java   = ["25"]
+go     = ["1.26"]
 
 [settings]
 legacy_version_file = true
