@@ -107,6 +107,25 @@ else
   echo "  ✓ user.email = ${email:-igor@morozov.is}"
 fi
 
+# ── Typography Layout ─────────────────────────────────────────────────────────
+
+step "Typography Layout (Ilya Birman)"
+KEYBOARD_LAYOUTS_DIR="$HOME/Library/Keyboard Layouts"
+if ls "$KEYBOARD_LAYOUTS_DIR"/*.keylayout &>/dev/null; then
+  echo "  ✓ Already installed"
+else
+  TYPO_LAYOUT_URL="https://ilyabirman.ru/typography-layout/download/ilya-birman-typolayout-3.9-mac.zip"
+  echo "  Downloading..."
+  TMP_DIR="$(mktemp -d)"
+  curl -fsSL "$TYPO_LAYOUT_URL" -o "$TMP_DIR/typolayout.zip"
+  unzip -q "$TMP_DIR/typolayout.zip" -d "$TMP_DIR"
+  mkdir -p "$KEYBOARD_LAYOUTS_DIR"
+  find "$TMP_DIR" -name "*.keylayout" -exec cp {} "$KEYBOARD_LAYOUTS_DIR/" \;
+  find "$TMP_DIR" -name "*.icns" -exec cp {} "$KEYBOARD_LAYOUTS_DIR/" \; 2>/dev/null || true
+  rm -rf "$TMP_DIR"
+  echo "  ✓ Installed — log out and back in, then enable in System Settings → Keyboard → Input Sources"
+fi
+
 # ── Apps ──────────────────────────────────────────────────────────────────────
 
 step "Apps"
