@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Scans /Applications for apps not in apps.conf, .appignore, or .appignore.local.
+# Prompts to add each unknown app to the required list or either ignore file.
+source "$(dirname "$0")/_lib"
+
+echo "Auditing installed apps..."
+found=0
+for app in /Applications/*.app; do
+  app_name="$(basename "$app")"
+  is_required "$app_name" && continue
+  is_ignored "$app_name" && continue
+  found=1
+  echo ""
+  echo "  $app_name"
+  printf "  [c] Add to required  [g] Global ignore  [l] Local ignore  [N] Skip: "
+  read -r response
+  case "$response" in
+    c|C)
+      read -rp "    Download URL: " url
+      echo "${app_name%.app}|/Applications/$app_name|$url" >> "$APPS_CONF"
+      echo "  → Added to apps.conf (edit display name if needed)"
+      ;;
+    g|G)
+      echo "$app_name" >> "$APPIGNORE"
+      echo "  → Added to .appignore"
+      ;;
+    l|L)
+      echo "$app_name" >> "$APPIGNORE_LOCAL"
+      echo "  → Added to .appignore.local"
+      ;;
+  esac
+done
+[ "$found" -eq 0 ] && echo "  All apps accounted for."

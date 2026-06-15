@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Checks that all required apps in apps.conf are installed.
+# For each missing app, offers to open its download page.
+source "$(dirname "$0")/_lib"
+
+echo "Checking required apps..."
+for entry in "${REQUIRED_APPS[@]}"; do
+  IFS='|' read -r name app_path url <<< "$entry"
+  if [ -d "$app_path" ]; then
+    echo "  ✓ $name"
+  else
+    echo "  ✗ $name"
+    read -rp "    Open download page? [y/N] " response
+    if [[ "$response" =~ ^[Yy]$ ]]; then open "$url"; fi
+  fi
+done

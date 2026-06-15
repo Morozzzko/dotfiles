@@ -14,7 +14,7 @@ unstow:
 	done
 
 apps:
-	@bin/apps
+	@bin/apps/check
 
 audit:
-	@bin/apps audit
+	@bin/apps/audit
