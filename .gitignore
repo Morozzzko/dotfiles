@@ -1,7 +1,7 @@
 *.tmp.*
 .DS_Store
-files/fish/completions
-files/fish/conf.d
-files/fish/fish_variables
-files/fish/functions/repo.fish
-files/nvim/plugin/
+fish/.config/fish/completions
+fish/.config/fish/conf.d
+fish/.config/fish/fish_variables
+fish/.config/fish/functions/repo.fish
+nvim/.config/nvim/plugin/

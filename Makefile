@@ -1,7 +1,14 @@
-.PHONY: store-shell-config store-nvim-config
+.PHONY: stow unstow
 
-store-shell-config:
-	rsync -rv ~/.config/fish/ files/fish/
+PACKAGES = fish nvim shell git
+DIR := $(shell pwd)
 
-store-nvim-config:
-	rsync -rv ~/.config/nvim/ files/nvim/
+stow:
+	@for pkg in $(PACKAGES); do \
+		stow --dir=$(DIR) --target=$(HOME) $$pkg; \
+	done
+
+unstow:
+	@for pkg in $(PACKAGES); do \
+		stow --dir=$(DIR) --target=$(HOME) -D $$pkg; \
+	done
