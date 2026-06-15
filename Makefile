@@ -1,4 +1,4 @@
-.PHONY: stow unstow
+.PHONY: stow unstow apps audit
 
 PACKAGES = fish nvim shell git
 DIR := $(shell pwd)
@@ -12,3 +12,9 @@ unstow:
 	@for pkg in $(PACKAGES); do \
 		stow --dir=$(DIR) --target=$(HOME) -D $$pkg; \
 	done
+
+apps:
+	@bin/apps
+
+audit:
+	@bin/apps audit

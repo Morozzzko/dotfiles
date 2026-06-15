@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+# Manages required macOS apps.
+#   bin/apps         — checks required apps are installed, offers to open download pages
+#   bin/apps audit   — scans /Applications for apps not in the required list or .appignore
+
+set -euo pipefail
+
+DOTFILES_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+APPIGNORE="$DOTFILES_DIR/.appignore"
+
+REQUIRED_APPS=(
+  "Notion|/Applications/Notion.app|https://www.notion.so/desktop"
+  "Notion Calendar|/Applications/Notion Calendar.app|https://www.notion.so/product/calendar"
+  "Xcode|/Applications/Xcode.app|https://apps.apple.com/app/xcode/id497799835"
+  "Postgres.app|/Applications/Postgres.app|https://postgresapp.com/downloads.html"
+  "Telegram|/Applications/Telegram.app|https://telegram.org/macos"
+  "Docker Desktop|/Applications/Docker.app|https://www.docker.com/products/docker-desktop/"
+)
+
+check_app() {
+  local name="$1" app_path="$2" url="$3"
+  if [ -d "$app_path" ]; then
+    echo "  ✓ $name"
+  else
+    echo "  ✗ $name"
+    read -rp "    Open download page? [y/N] " response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+      open "$url"
+    fi
+  fi
+}
+
+is_required() {
+  local app_name="$1"
+  for entry in "${REQUIRED_APPS[@]}"; do
+    local path; path="$(echo "$entry" | cut -d'|' -f2)"
+    [ "$(basename "$path")" = "$app_name" ] && return 0
+  done
+  return 1
+}
+
+is_ignored() {
+  local app_name="$1"
+  [ -f "$APPIGNORE" ] && grep -qxF "$app_name" "$APPIGNORE"
+}
+
+cmd_check() {
+  echo "Checking required apps..."
+  for entry in "${REQUIRED_APPS[@]}"; do
+    IFS='|' read -r name app_path url <<< "$entry"
+    check_app "$name" "$app_path" "$url"
+  done
+}
+
+cmd_audit() {
+  echo "Auditing installed apps..."
+  local found=0
+  for app in /Applications/*.app; do
+    local app_name; app_name="$(basename "$app")"
+    is_required "$app_name" && continue
+    is_ignored "$app_name" && continue
+    found=1
+    echo ""
+    echo "  $app_name"
+    read -rp "  Add to .appignore? [y/N] " response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+      echo "$app_name" >> "$APPIGNORE"
+      echo "  → Added"
+    fi
+  done
+  [ "$found" -eq 0 ] && echo "  All apps accounted for."
+}
+
+case "${1:-check}" in
+  check) cmd_check ;;
+  audit) cmd_audit ;;
+  *) echo "Usage: bin/apps [check|audit]" >&2; exit 1 ;;
+esac
