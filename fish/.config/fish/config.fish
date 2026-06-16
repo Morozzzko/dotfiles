@@ -30,9 +30,10 @@ abbr hubpr "hub pull-request --base=(git branch | cut -c 3- | grep -E '^master\$
 abbr gcom "git checkout (git branch | cut -c 3- | grep -E '^master\$|^main\$')"
 
 mise activate fish | source
-set -g fish_user_paths "/usr/local/opt/libpq/bin" $fish_user_paths
 
- function fish_right_prompt
-  #intentionally left blank
- end
-export PATH="/Users/moroz/.sitedog/bin:$PATH"
+fish_add_path /opt/homebrew/opt/libpq/bin
+fish_add_path ~/.sitedog/bin
+
+function fish_right_prompt
+  # intentionally left blank
+end
