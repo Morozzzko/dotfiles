@@ -57,7 +57,7 @@ stow_pkg() {
   echo "  ✓ $pkg"
 }
 
-for pkg in fish nvim shell git mise claude; do
+for pkg in fish nvim shell git mise claude iterm2; do
   stow_pkg "$pkg"
 done
 
