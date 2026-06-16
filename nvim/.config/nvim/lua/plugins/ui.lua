@@ -28,7 +28,7 @@ return {
     event = "VeryLazy",
     opts = {
       options = {
-        theme = "catppuccin",
+        theme = "catppuccin-mocha",
         globalstatus = true,
         disabled_filetypes = { statusline = { "neo-tree" } },
       },
