@@ -35,9 +35,24 @@ if ! command -v stow &>/dev/null; then
   echo "  ✗ stow is not installed — add it to Brewfile or install it manually" >&2
   exit 1
 fi
-for pkg in fish nvim shell git mise; do
+
+stow_pkg() {
+  local pkg="$1"
+  # Remove plain files that would block stow (stow only conflicts on plain files, not dirs/symlinks)
+  while IFS= read -r -d '' src; do
+    local rel="${src#"$DOTFILES_DIR/$pkg/"}"
+    local target="$HOME/$rel"
+    if [ -f "$target" ] && [ ! -L "$target" ]; then
+      rm "$target"
+      echo "  – Removed conflicting file: $target"
+    fi
+  done < <(find "$DOTFILES_DIR/$pkg" -type f -print0)
   stow --dir="$DOTFILES_DIR" --target="$HOME" --restow "$pkg"
   echo "  ✓ $pkg"
+}
+
+for pkg in fish nvim shell git mise claude; do
+  stow_pkg "$pkg"
 done
 
 # ── Default shell ─────────────────────────────────────────────────────────────
