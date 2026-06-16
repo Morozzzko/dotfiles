@@ -1,9 +1,16 @@
-.DS_Store
+**/*.DS_Store
 *.swp
 *.swo
 .idea/
-.vscode/
-
-# AI tools
-**/.claude/settings.local.json
-.cursor/
+.tool-versions
+local_scripts/
+.goosehints
+.goose/
+CLAUDE.md
+.vscode
+.cursor
+.claude/
+.cursorrules
+my_scripts/
+.serena/
+.worktrees/
