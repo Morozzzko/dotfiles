@@ -16,7 +16,6 @@ abbr -a gpo 'git push -u origin (git branch --show-current)'
 abbr -a gpof 'git push -u origin (git branch --show-current) --force-with-lease'
 abbr -a gbm git branch -m
 abbr -a -g -- gst 'lazygit status'
-abbr -a -U -- gst 'lazygit status'
 abbr -a dcl docker container list 
 abbr -a dl docker logs 
 abbr -a ldk lazydocker
