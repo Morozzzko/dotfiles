@@ -61,6 +61,17 @@ for pkg in fish nvim shell git mise claude iterm2; do
   stow_pkg "$pkg"
 done
 
+# ── Fisher (fish plugins) ─────────────────────────────────────────────────────
+
+step "Fisher"
+if fish -c "type -q fisher" &>/dev/null; then
+  echo "  ✓ Already installed"
+else
+  fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
+  echo "  ✓ Installed Fisher"
+fi
+fish -c "fisher update" 2>&1 | sed 's/^/  /'
+
 # ── Default shell ─────────────────────────────────────────────────────────────
 
 step "Default shell"

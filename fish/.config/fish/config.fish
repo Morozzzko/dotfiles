@@ -10,7 +10,6 @@ abbr -a rails bin/rails
 abbr -a jekyll bin/jekyll
 abbr -a rubocop bin/rubocop
 abbr -a bridgetown bin/bridgetown
-abbr -a gpf git push --force-with-lease
 abbr -a grs git restore --source main
 abbr -a gpo 'git push -u origin (git branch --show-current)'
 abbr -a gpof 'git push -u origin (git branch --show-current) --force-with-lease'
