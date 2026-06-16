@@ -59,19 +59,6 @@ else
   echo "  ✓ Default shell set to fish (re-login to apply)"
 fi
 
-# ── iTerm2 ────────────────────────────────────────────────────────────────────
-
-step "iTerm2"
-ITERM_PREFS="$DOTFILES_DIR/iterm2"
-if [ ! -d "$ITERM_PREFS" ]; then
-  echo "  – No iterm2/ directory found, skipping"
-else
-  defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$ITERM_PREFS"
-  defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
-  echo "  ✓ Preferences pointing to $ITERM_PREFS"
-  echo "  – Restart iTerm2 to apply"
-fi
-
 # ── Mise ──────────────────────────────────────────────────────────────────────
 
 step "Mise"
