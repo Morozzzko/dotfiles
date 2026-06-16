@@ -40,5 +40,3 @@ export GPG_TTY="$(tty)"
 source ~/.profile_secrets
 
 export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
-
-export HAPPY_SERVER_URL="https://happy.dev.morozov.is"
