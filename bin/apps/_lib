@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DOTFILES_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
+APPS_CONF="$DOTFILES_DIR/apps.conf"
+APPIGNORE="$DOTFILES_DIR/.appignore"
+APPIGNORE_LOCAL="$DOTFILES_DIR/.appignore.local"
+
+REQUIRED_APPS=()
+while IFS= read -r line; do
+  [[ "$line" =~ ^[[:space:]]*# || -z "${line// }" ]] && continue
+  REQUIRED_APPS+=("$line")
+done < "$APPS_CONF"
+
+is_required() {
+  local app_name="$1"
+  for entry in "${REQUIRED_APPS[@]}"; do
+    local path; path="$(echo "$entry" | cut -d'|' -f2)"
+    [ "$(basename "$path")" = "$app_name" ] && return 0
+  done
+  return 1
+}
+
+is_ignored() {
+  local app_name="$1"
+  { [ -f "$APPIGNORE" ] && grep -qxF "$app_name" "$APPIGNORE"; } && return 0
+  { [ -f "$APPIGNORE_LOCAL" ] && grep -qxF "$app_name" "$APPIGNORE_LOCAL"; } && return 0
+  return 1
+}

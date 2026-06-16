@@ -1,7 +1,7 @@
-.PHONY: store-shell-config store-nvim-config
+.PHONY: setup audit
 
-store-shell-config:
-	rsync -rv ~/.config/fish/ files/fish/
+setup:
+	@bin/setup
 
-store-nvim-config:
-	rsync -rv ~/.config/nvim/ files/nvim/
+audit:
+	@bin/apps/audit

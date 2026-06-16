@@ -1,0 +1,165 @@
+#!/usr/bin/env bash
+# Single entrypoint for setting up a new machine.
+# Run this script repeatedly — each step is idempotent.
+set -euo pipefail
+
+DOTFILES_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+
+step() {
+  echo
+  echo "==> $1"
+}
+
+# ── Homebrew ──────────────────────────────────────────────────────────────────
+
+step "Homebrew"
+if command -v brew &>/dev/null; then
+  echo "  ✓ Already installed"
+else
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# ── Brew packages ─────────────────────────────────────────────────────────────
+
+step "Brew packages"
+if [ -f "$DOTFILES_DIR/Brewfile" ]; then
+  brew bundle --file="$DOTFILES_DIR/Brewfile"
+else
+  echo "  – No Brewfile found, skipping"
+fi
+
+# ── Stow ──────────────────────────────────────────────────────────────────────
+
+step "Stow"
+if ! command -v stow &>/dev/null; then
+  echo "  ✗ stow is not installed — add it to Brewfile or install it manually" >&2
+  exit 1
+fi
+
+stow_pkg() {
+  local pkg="$1"
+  # Remove plain files that would block stow, but never files that resolve into the dotfiles dir
+  # (stow may have previously created a directory-level symlink, which would cause us to follow
+  # it and accidentally delete the actual source files from the dotfiles repo)
+  while IFS= read -r -d '' src; do
+    local rel="${src#"$DOTFILES_DIR/$pkg/"}"
+    local target="$HOME/$rel"
+    if [ -f "$target" ] && [ ! -L "$target" ]; then
+      local real_target
+      real_target="$(realpath "$target" 2>/dev/null || true)"
+      if [[ "$real_target" != "$DOTFILES_DIR/"* ]]; then
+        rm "$target"
+        echo "  – Removed conflicting file: $target"
+      fi
+    fi
+  done < <(find "$DOTFILES_DIR/$pkg" -type f -print0)
+  stow --dir="$DOTFILES_DIR" --target="$HOME" --restow "$pkg"
+  echo "  ✓ $pkg"
+}
+
+for pkg in fish nvim shell git mise claude iterm2; do
+  stow_pkg "$pkg"
+done
+
+# ── Fisher (fish plugins) ─────────────────────────────────────────────────────
+
+step "Fisher"
+if fish -c "type -q fisher" &>/dev/null; then
+  echo "  ✓ Already installed"
+else
+  fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
+  echo "  ✓ Installed Fisher"
+fi
+fish -c "fisher update" 2>&1 | sed 's/^/  /'
+
+# ── Default shell ─────────────────────────────────────────────────────────────
+
+step "Default shell"
+FISH="$(which fish 2>/dev/null || true)"
+if [ -z "$FISH" ]; then
+  echo "  ✗ fish not found — ensure it is in Brewfile" >&2
+  exit 1
+fi
+if [ "$SHELL" = "$FISH" ]; then
+  echo "  ✓ Already set to fish"
+else
+  if ! grep -qxF "$FISH" /etc/shells; then
+    echo "  Adding fish to /etc/shells (requires sudo)..."
+    echo "$FISH" | sudo tee -a /etc/shells > /dev/null
+  fi
+  chsh -s "$FISH"
+  echo "  ✓ Default shell set to fish (re-login to apply)"
+fi
+
+# ── Mise ──────────────────────────────────────────────────────────────────────
+
+step "Mise"
+if ! command -v mise &>/dev/null; then
+  echo "  ✗ mise not installed — add it to Brewfile" >&2
+  exit 1
+fi
+mise install --quiet
+echo "  ✓ Tools installed"
+
+# ── Secrets file ──────────────────────────────────────────────────────────────
+
+step "Secrets"
+if [ -f "$HOME/.profile_secrets" ]; then
+  echo "  ✓ ~/.profile_secrets already exists"
+else
+  touch "$HOME/.profile_secrets"
+  echo "  ✓ Created ~/.profile_secrets"
+fi
+
+# ── Git ───────────────────────────────────────────────────────────────────────
+
+step "Git"
+git config --global user.name "Igor Morozov"
+echo "  ✓ user.name = Igor Morozov"
+
+current_email="$(git config --global user.email 2>/dev/null || true)"
+if [ -n "$current_email" ]; then
+  echo "  ✓ user.email = $current_email (already set)"
+else
+  read -rp "  Email [igor@morozov.is]: " email
+  git config --global user.email "${email:-igor@morozov.is}"
+  echo "  ✓ user.email = ${email:-igor@morozov.is}"
+fi
+
+# ── Shared projects ───────────────────────────────────────────────────────────
+
+step "Shared projects"
+SHARED_DIR="/Users/Shared/projects"
+LINK="$HOME/projects/shared"
+mkdir -p "$SHARED_DIR"
+if [ -L "$LINK" ] && [ "$(readlink "$LINK")" = "$SHARED_DIR" ]; then
+  echo "  ✓ ~/projects/shared already linked"
+else
+  mkdir -p "$HOME/projects"
+  ln -sfn "$SHARED_DIR" "$LINK"
+  echo "  ✓ ~/projects/shared → $SHARED_DIR"
+fi
+
+# ── Typography Layout ─────────────────────────────────────────────────────────
+
+step "Typography Layout (Ilya Birman)"
+KEYBOARD_LAYOUTS_DIR="$HOME/Library/Keyboard Layouts"
+if ls "$KEYBOARD_LAYOUTS_DIR"/*.keylayout &>/dev/null; then
+  echo "  ✓ Already installed"
+else
+  TYPO_LAYOUT_URL="https://ilyabirman.ru/typography-layout/download/ilya-birman-typolayout-3.9-mac.zip"
+  echo "  Downloading..."
+  TMP_DIR="$(mktemp -d)"
+  curl -fsSL "$TYPO_LAYOUT_URL" -o "$TMP_DIR/typolayout.zip"
+  unzip -q "$TMP_DIR/typolayout.zip" -d "$TMP_DIR"
+  mkdir -p "$KEYBOARD_LAYOUTS_DIR"
+  find "$TMP_DIR" -name "*.keylayout" -exec cp {} "$KEYBOARD_LAYOUTS_DIR/" \;
+  find "$TMP_DIR" -name "*.icns" -exec cp {} "$KEYBOARD_LAYOUTS_DIR/" \; 2>/dev/null || true
+  rm -rf "$TMP_DIR"
+  echo "  ✓ Installed — log out and back in, then enable in System Settings → Keyboard → Input Sources"
+fi
+
+# ── Apps ──────────────────────────────────────────────────────────────────────
+
+step "Apps"
+"$DOTFILES_DIR/bin/apps/check"

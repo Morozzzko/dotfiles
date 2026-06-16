@@ -1,0 +1,15 @@
+# macOS native apps — ignored by default in bin/apps audit
+Developer.app
+GarageBand.app
+iMovie.app
+Keynote.app
+Keynote Creator Studio.app
+Numbers.app
+Numbers Creator Studio.app
+Pages.app
+Pages Creator Studio.app
+Safari.app
+Camera Settings.app
+Microsoft Excel.app
+Microsoft PowerPoint.app
+Microsoft Word.app

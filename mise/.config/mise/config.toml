@@ -1,0 +1,11 @@
+[tools]
+ruby   = ["4.0"]
+node   = ["24"]
+python = ["3.14"]
+java   = ["25"]
+go     = ["1.26"]
+pnpm   = ["latest"]
+yarn   = ["latest"]
+
+[settings]
+legacy_version_file = true
