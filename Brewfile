@@ -47,7 +47,7 @@ brew "ldns"
 brew "lefthook"
 brew "mise"
 brew "mono"
-brew "neovim", link: false
+brew "neovim"
 brew "overmind"
 brew "parallel"
 brew "ripgrep"
