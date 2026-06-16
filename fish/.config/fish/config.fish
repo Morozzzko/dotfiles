@@ -29,7 +29,6 @@ abbr hubpr "hub pull-request --base=(git branch | cut -c 3- | grep -E '^master\$
 abbr gcom "git checkout (git branch | cut -c 3- | grep -E '^master\$|^main\$')"
 
 mise activate fish | source
-fzf_key_bindings
 
 fish_add_path /opt/homebrew/opt/libpq/bin
 fish_add_path ~/.sitedog/bin
