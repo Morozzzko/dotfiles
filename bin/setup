@@ -38,13 +38,19 @@ fi
 
 stow_pkg() {
   local pkg="$1"
-  # Remove plain files that would block stow (stow only conflicts on plain files, not dirs/symlinks)
+  # Remove plain files that would block stow, but never files that resolve into the dotfiles dir
+  # (stow may have previously created a directory-level symlink, which would cause us to follow
+  # it and accidentally delete the actual source files from the dotfiles repo)
   while IFS= read -r -d '' src; do
     local rel="${src#"$DOTFILES_DIR/$pkg/"}"
     local target="$HOME/$rel"
     if [ -f "$target" ] && [ ! -L "$target" ]; then
-      rm "$target"
-      echo "  – Removed conflicting file: $target"
+      local real_target
+      real_target="$(realpath "$target" 2>/dev/null || true)"
+      if [[ "$real_target" != "$DOTFILES_DIR/"* ]]; then
+        rm "$target"
+        echo "  – Removed conflicting file: $target"
+      fi
     fi
   done < <(find "$DOTFILES_DIR/$pkg" -type f -print0)
   stow --dir="$DOTFILES_DIR" --target="$HOME" --restow "$pkg"
