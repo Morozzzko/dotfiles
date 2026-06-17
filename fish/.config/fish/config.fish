@@ -11,6 +11,9 @@ abbr -a jekyll bin/jekyll
 abbr -a rubocop bin/rubocop
 abbr -a bridgetown bin/bridgetown
 abbr -a gc git commit
+abbr -a gco git checkout
+abbr -a gl git pull
+abbr -a gp git push
 abbr -a grs git restore --source main
 abbr -a gpo 'git push -u origin (git branch --show-current)'
 abbr -a gpof 'git push -u origin (git branch --show-current) --force-with-lease'

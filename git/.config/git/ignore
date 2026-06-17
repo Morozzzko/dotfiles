@@ -9,7 +9,11 @@ local_scripts/
 CLAUDE.md
 .vscode
 .cursor
-.claude/
+**/.claude/**
+!**/.claude/CLAUDE.md
+!**/.claude/settings.json
+!**/.claude/skills/
+!**/.claude/skills/**
 .cursorrules
 my_scripts/
 .serena/

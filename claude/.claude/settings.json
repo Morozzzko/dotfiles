@@ -1,6 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "theme": "auto",
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
@@ -22,6 +21,22 @@
       }
     }
   },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "prompt",
+            "continueOnBlock": true,
+            "statusMessage": "Checking Bash command discipline",
+            "prompt": "You enforce the user's Bash command-discipline rules. Judge ONLY the command in this tool call; do not run anything. Input: $ARGUMENTS\n\nBLOCK (ok=false) if the command does ANY of these:\n- Chains independent operations with `;`, `&&`, or `||` merely to run them in sequence (e.g. `git status; git log`, `mkdir x && ls -la`). Each conceptual operation must be its own Bash call.\n- Uses `echo`/`printf` to emit a section-header separator such as `---` or `===== foo =====` between sub-commands.\n- Chains `cd` with another command (e.g. `cd /x && cmd`). Use absolute paths or a tool's -C/--cwd flag instead.\n- Uses shell `for`/`while` to loop a handful of fixed items through one command that could be separate calls or a single multi-path invocation.\n\nALLOW (ok=true) if:\n- It is a single operation with no chaining.\n- It pipes `|` data into a command that genuinely needs stdin (e.g. `jq ... | cmd`, `grep ... | awk`, `cmd | xargs`).\n- It chains with `&&` ONLY for a true sequential dependency (e.g. `pnpm install && pnpm test`) or rollback-on-failure (e.g. `mktemp ... && trap cleanup EXIT`).\n- The loop logic genuinely lives in the shell (processing another command's output line-by-line in a way xargs can't express).\n\nWhen blocking, the reason must name the specific violation and instruct: split into separate Bash calls (or use absolute paths / a single multi-path invocation)."
+          }
+        ]
+      }
+    ]
+  },
+  "theme": "auto",
   "skipAutoPermissionPrompt": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754071115162

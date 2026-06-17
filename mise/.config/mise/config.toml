@@ -6,6 +6,7 @@ java   = ["25"]
 go     = ["1.26"]
 pnpm   = ["latest"]
 yarn   = ["latest"]
+bun = "latest"
 
 [settings]
 legacy_version_file = true
