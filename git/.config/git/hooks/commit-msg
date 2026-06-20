@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+op read "op://NoBSLog/b54vlm6v6mcjww6bubxbj74ikm/credential" \
+  | "$(brew --prefix gnupg)/libexec/gpg-preset-passphrase" --preset 2049A644BC674FFCA1A93C20C2815D245D755DEC
+exit 0

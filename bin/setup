@@ -126,6 +126,25 @@ else
   echo "  ✓ user.email = ${email:-igor@morozov.is}"
 fi
 
+git config --global user.signingkey 37558525CD93FC78
+git config --global commit.gpgsign true
+echo "  ✓ GPG signing enabled (key 37558525CD93FC78)"
+
+git config --global core.hooksPath ~/.config/git/hooks
+echo "  ✓ core.hooksPath = ~/.config/git/hooks"
+
+chmod +x "$HOME/.config/git/hooks/"*
+echo "  ✓ git hooks made executable"
+
+GNUPG_CONF="$HOME/.gnupg/gpg-agent.conf"
+mkdir -p "$HOME/.gnupg"
+if ! grep -qF "allow-preset-passphrase" "$GNUPG_CONF" 2>/dev/null; then
+  echo "allow-preset-passphrase" >> "$GNUPG_CONF"
+  echo "  ✓ allow-preset-passphrase added to gpg-agent.conf"
+else
+  echo "  ✓ allow-preset-passphrase already in gpg-agent.conf"
+fi
+
 # ── Shared projects ───────────────────────────────────────────────────────────
 
 step "Shared projects"

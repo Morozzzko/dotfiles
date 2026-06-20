@@ -24,8 +24,7 @@ map("n", "<Up>", "gk", o)
 
 -- File tree (neo-tree)
 map("n", "<leader><leader>", ":Neotree toggle<CR>", o)
-map("n", "<leader>e", ":Neotree reveal<CR>", o)
-map("n", "<leader>b", ":Neotree action=focus source=buffers position=bottom<CR>", o)
+map("n", "<CR>", ":Neotree reveal<CR>", o)
 
 -- Yank helpers
 map("n", "<leader>yl", "0vg_y", o)           -- yank line content (no newline)

@@ -6,7 +6,7 @@ return {
       { "<leader>ff", "<cmd>Telescope find_files<cr>" },
       { "<leader>fa", "<cmd>Telescope live_grep<cr>" },
       { "<leader>fh", "<cmd>Telescope help_tags<cr>" },
-      { "<leader>fb", "<cmd>Telescope buffers<cr>" },
+      { "<leader>b", function() require("telescope.builtin").buffers({ sort_mru = true, ignore_current_buffer = true }) end },
       { "<leader>fr", "<cmd>Telescope oldfiles<cr>" },
     },
     dependencies = {
