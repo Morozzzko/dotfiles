@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+msg=$(grep -vE '^[#;]' "$1" | tr -d '[:space:]')
+[ -z "$msg" ] && exit 0
+
+gpg-connect-agent "keyinfo 2049A644BC674FFCA1A93C20C2815D245D755DEC" /bye 2>/dev/null | grep -q " 1 " && exit 0
 op read "op://NoBSLog/b54vlm6v6mcjww6bubxbj74ikm/credential" \
   | "$(brew --prefix gnupg)/libexec/gpg-preset-passphrase" --preset 2049A644BC674FFCA1A93C20C2815D245D755DEC
 exit 0
