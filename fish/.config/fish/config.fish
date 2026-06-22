@@ -14,7 +14,10 @@ abbr -a gc git commit
 abbr -a gco git checkout
 abbr -a gl git pull
 abbr -a gp git push
-abbr -a grs git restore --source main
+abbr -a grb git rebase
+abbr -a grbi git rebase --interactive
+abbr -a grs git restore --source
+abbr -a grsm git restore --source main
 abbr -a gpo 'git push -u origin (git branch --show-current)'
 abbr -a gpof 'git push -u origin (git branch --show-current) --force-with-lease'
 abbr -a gbm git branch -m
