@@ -2,6 +2,17 @@
 
 These rules apply to every project. Project-level `CLAUDE.md` files may add to them but should not relax them.
 
+## superpowers and generated design documents
+
+Plans and other artifacts of planning a task should not be committed to the repo.
+Before creating a pull request make sure that docs/superpowers is not committed to the PR.
+
+## Comments
+
+Avoid leaving comments that explain what is being done or how it's being done – that is apparent from the code. Prefer comments that give wider context as to why a certain decision is made – but only in cases where that can't reasonably be inferred from the context of the change (PR) or from the code itself.
+
+Avoid leaving ponytail: comments
+
 ## Bash command discipline
 
 **Hard rules:**
