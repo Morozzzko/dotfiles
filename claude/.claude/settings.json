@@ -27,7 +27,10 @@
     "frontend-design@claude-plugins-official": true,
     "swift-lsp@claude-plugins-official": true,
     "ruby-lsp@claude-plugins-official": true,
-    "ponytail@ponytail": true
+    "ponytail@ponytail": true,
+    "posthog@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "revdiff@revdiff": true
   },
   "extraKnownMarketplaces": {
     "claude-code-plugins": {
@@ -41,8 +44,15 @@
         "source": "github",
         "repo": "DietrichGebert/ponytail"
       }
+    },
+    "revdiff": {
+      "source": {
+        "source": "github",
+        "repo": "umputun/revdiff"
+      }
     }
   },
+  "tui": "fullscreen",
   "theme": "auto",
   "skipAutoPermissionPrompt": true,
   "feedbackSurveyState": {
