@@ -13,7 +13,6 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 export PATH="$PATH:/Library/Frameworks/Mono.framework/Versions"
 export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
-export LIBRARY_PATH="$LIBRARY_PATH:/usr/local/opt/openssl/lib/"
 
 # Android
 
