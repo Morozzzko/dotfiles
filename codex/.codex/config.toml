@@ -34,6 +34,16 @@ enabled = true
 
 [features]
 js_repl = false
+hooks = true
+
+[[hooks.PreToolUse]]
+matcher = "^Bash$"
+
+[[hooks.PreToolUse.hooks]]
+type = "command"
+command = "python3 ~/.codex/hooks/bash-discipline.py"
+timeout = 5
+statusMessage = "Checking Bash command discipline"
 
 [desktop]
 conversationDetailMode = "STEPS_PROSE"
