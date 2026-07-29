@@ -14,6 +14,8 @@ CLAUDE.md
 !**/.claude/settings.json
 !**/.claude/skills/
 !**/.claude/skills/**
+!**/.claude/hooks/
+!**/.claude/hooks/**
 .cursorrules
 my_scripts/
 .serena/
