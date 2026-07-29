@@ -11,7 +11,9 @@ Before creating a pull request make sure that docs/superpowers is not committed 
 
 Avoid leaving comments that explain what is being done or how it's being done – that is apparent from the code. Prefer comments that give wider context as to why a certain decision is made – but only in cases where that can't reasonably be inferred from the context of the change (PR) or from the code itself.
 
-Avoid leaving ponytail: comments
+Avoid leaving `ponytail:` comments in code.
+
+For most things, avoid leaving comments at all. Sometimes you'd want to leave a comment explaining why exactly a piece of code was done – reference to a spec, an RFC, or something. Don't – that's something we do in a task or in the PR description.
 
 ## Bash command discipline
 
