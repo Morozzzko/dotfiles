@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DOTFILES_DIR="${DOTFILES_DIR:-"$(cd "$(dirname "$0")/../.." && pwd)"}"
+CLAUDE_SKILLS_DIR="$HOME/.claude/skills"
+CODEX_SKILLS_DIR="$HOME/.codex/skills"
+
+if [ -L "$CLAUDE_SKILLS_DIR" ]; then
+  case "$(readlink "$CLAUDE_SKILLS_DIR")" in
+    */claude/.claude/skills)
+      rm "$CLAUDE_SKILLS_DIR"
+      echo "Migrated the old Claude skills link"
+      ;;
+    *)
+      echo "$CLAUDE_SKILLS_DIR is a symlink managed elsewhere" >&2
+      exit 1
+      ;;
+  esac
+fi
+
+mkdir -p "$CLAUDE_SKILLS_DIR" "$CODEX_SKILLS_DIR"
+
+stow --dir="$DOTFILES_DIR" --target="$CLAUDE_SKILLS_DIR" --restow skills
+stow --dir="$DOTFILES_DIR" --target="$CODEX_SKILLS_DIR" --restow skills

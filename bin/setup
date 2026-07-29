@@ -61,6 +61,11 @@ for pkg in fish nvim shell git mise claude iterm2; do
   stow_pkg "$pkg"
 done
 
+# ── Shared AI skills ──────────────────────────────────────────────────────────
+
+step "Shared AI skills"
+"$DOTFILES_DIR/bin/skills/sync"
+
 # ── Fisher (fish plugins) ─────────────────────────────────────────────────────
 
 step "Fisher"

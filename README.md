@@ -14,6 +14,27 @@ So here's the process:
 
 The `~/.profile` file is shared, while secrets are sourced from `~/.profile_secrets`. 
 
+## Shared AI skills
+
+Personal skills shared by Claude Code and Codex live in `skills/<skill-name>/`. Each skill
+uses the portable Agent Skills layout and has a required `SKILL.md`:
+
+```text
+skills/
+└── example/
+    ├── SKILL.md
+    ├── scripts/
+    └── references/
+```
+
+Run `make skills` after adding or removing a skill. The command stows the same package into
+both `~/.claude/skills/` and `~/.codex/skills/`, preserving Codex's bundled `.system`
+directory and unrelated skills installed by other tools.
+
+Keep shared skill frontmatter to the common `name` and `description` fields. Supporting files
+are portable. Avoid tool-specific features such as Claude's dynamic command injection in
+shared skills. Codex-only UI metadata can live in `agents/openai.yaml`.
+
 ## TL;DR of the config
 
 Shell: fish in iTerm (for real)
