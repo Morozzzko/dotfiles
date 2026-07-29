@@ -57,7 +57,7 @@ stow_pkg() {
   echo "  ✓ $pkg"
 }
 
-for pkg in fish nvim shell git mise claude iterm2; do
+for pkg in fish nvim shell git mise claude codex iterm2; do
   stow_pkg "$pkg"
 done
 
@@ -65,6 +65,11 @@ done
 
 step "Shared AI skills"
 "$DOTFILES_DIR/bin/skills/sync"
+
+# ── Codex plugins ─────────────────────────────────────────────────────────────
+
+step "Codex plugins"
+"$DOTFILES_DIR/bin/codex/setup"
 
 # ── Fisher (fish plugins) ─────────────────────────────────────────────────────
 

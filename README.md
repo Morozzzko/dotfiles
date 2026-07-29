@@ -35,6 +35,15 @@ Keep shared skill frontmatter to the common `name` and `description` fields. Sup
 are portable. Avoid tool-specific features such as Claude's dynamic command injection in
 shared skills. Codex-only UI metadata can live in `agents/openai.yaml`.
 
+## Codex
+
+The `codex` Stow package manages `~/.codex/config.toml`. Authentication, sessions, caches,
+downloaded plugin bundles, and other runtime state under `~/.codex` remain local.
+
+Installed plugins are declared in `codex-plugins.conf`. The machine setup runs
+`bin/codex/setup` to install or refresh them through the Codex CLI rather than committing
+the plugin cache.
+
 ## TL;DR of the config
 
 Shell: fish in iTerm (for real)

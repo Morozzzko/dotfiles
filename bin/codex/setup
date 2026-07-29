@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DOTFILES_DIR="${DOTFILES_DIR:-"$(cd "$(dirname "$0")/../.." && pwd)"}"
+PLUGINS_FILE="$DOTFILES_DIR/codex-plugins.conf"
+
+while IFS= read -r plugin; do
+  [ -n "$plugin" ] || continue
+  codex plugin add "$plugin"
+done < "$PLUGINS_FILE"
