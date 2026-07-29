@@ -22,3 +22,4 @@ my_scripts/
 .worktrees/
 dump.rdb
 .superpowers/
+docs/superpowers
