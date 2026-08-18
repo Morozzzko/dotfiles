@@ -19,6 +19,19 @@ else
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
+# ── Shared Homebrew prefix ────────────────────────────────────────────────────
+# Homebrew has no multi-user support: whoever installs a formula owns the files
+# with a 022 umask, and every other account then fails to write. An inherited
+# ACL grants the admin group write on everything, including files created later.
+
+step "Homebrew permissions"
+BREW_PREFIX="$(brew --prefix)"
+if ls -lde "$BREW_PREFIX" | grep -q "group:admin allow"; then
+  echo "  ✓ admin group already has an inherited ACL"
+else
+  sudo chmod -R +a "group:admin allow read,write,execute,delete,append,readattr,writeattr,readextattr,writeextattr,readsecurity,file_inherit,directory_inherit" "$BREW_PREFIX"
+fi
+
 # ── Brew packages ─────────────────────────────────────────────────────────────
 
 step "Brew packages"

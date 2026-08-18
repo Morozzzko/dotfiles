@@ -103,3 +103,6 @@ vscode "vscjava.vscode-maven"
 vscode "yzane.markdown-pdf"
 npm "corepack"
 npm "happy"
+
+brew "libpq"
+brew "temporal"

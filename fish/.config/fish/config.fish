@@ -22,8 +22,8 @@ abbr -a gpo 'git push -u origin (git branch --show-current)'
 abbr -a gpof 'git push -u origin (git branch --show-current) --force-with-lease'
 abbr -a gbm git branch -m
 abbr -a -g -- gst 'lazygit status'
-abbr -a dcl docker container list 
-abbr -a dl docker logs 
+abbr -a dcl docker container list
+abbr -a dl docker logs
 abbr -a ldk lazydocker
 abbr -a lzd lazydocker
 abbr -a dc devcontainer exec --workspace-folder .
@@ -33,6 +33,8 @@ abbr gbda "git fetch -p && git for-each-ref --format '%(refname:short) %(upstrea
 abbr hubpr "hub pull-request --base=(git branch | cut -c 3- | grep -E '^master\$|^main\$')"
 
 abbr gcom "git checkout (git branch | cut -c 3- | grep -E '^master\$|^main\$')"
+
+abbr gb git branch
 
 mise activate fish | source
 
