@@ -2,6 +2,16 @@
 
 These rules apply to every project. Project-level `CLAUDE.md` files may add to them but should not relax them.
 
+## Simplicity is a correctness marker
+
+The preferred solution is a simple and a standard one. If you have to run sed to read a file – you're doing something wrong. If you have to pass full paths to run something that should have been available in PATH – you're doing something wrong. If you're passing environment variables to disable certain behaviors that are not directly related to task at hand – you're doing something wrong.
+
+Use that as a marker and a self-reflection tool. Pause and reassess instead of trying to trick the system using complicated commands.
+
+## Working with git
+
+While you MAY work on the main branch, do not commit there directly unless explicitly (in no unclear terms) prompted to work on main specifically by user. Any changes go through branches and PRs, no matter how small.
+
 ## superpowers and generated design documents
 
 Plans and other artifacts of planning a task should not be committed to the repo.
