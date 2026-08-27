@@ -58,6 +58,9 @@ enabled = true
 [plugins."browser@openai-bundled"]
 enabled = true
 
+[plugins."codex-app-tools@openai-bundled"]
+enabled = true
+
 [features]
 js_repl = false
 hooks = true
@@ -72,6 +75,6 @@ timeout = 5
 statusMessage = "Checking Bash command discipline"
 
 [desktop]
-conversationDetailMode = "STEPS_PROSE"
+conversationDetailMode = "STEPS_COMMANDS"
 ambient-suggestions-enabled = true
 followUpQueueMode = "queue"
